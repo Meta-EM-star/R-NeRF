@@ -90,9 +90,7 @@ class Renderer_RSSI(Renderer):
         tags_chunk = tx.expand(chunks, -1, -1).permute(1,0,2)        #[bs, cks, 3]tx ris
         tags_chunk1 = ris.expand(chunks, -1, -1).permute(1,0,2)        #[bs, cks, 3]rx ris
 
-
         recv_signal = torch.zeros(batchsize1).cuda() # tx ris
-        #recv_signal1 = torch.zeros(batchsize1).cuda() # rx ris
 
         for i in range(chunks_num):
 
@@ -111,14 +109,10 @@ class Renderer_RSSI(Renderer):
             tx_chunk1 = tags_chunk1[..., None, :].expand(pts1.shape)  # [bs, cks, pts, 3]
 
             # Run network and compute outputs
-            #print(self.network_fn)
             raw, raw1= self.network_fn(pts, views_chunk, tx_chunk, pts1, views_chunk1, tx_chunk1)    # [batchsize, chunks, n_samples, 4]
-
-            # print("sssssssssssssssssssssssss",raw)
             recv_signal_chunks = self.raw2outputs_signal(raw, raw1, t_vals, t_vals1, rays_d_chunk, rays_d_chunk1)  # [bs]
             recv_signal += recv_signal_chunks
 
-        #print(raw.shape)
         return recv_signal    # [batchsize,]
 
 
