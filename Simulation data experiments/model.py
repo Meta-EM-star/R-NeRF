@@ -160,7 +160,6 @@ class RNeRF(nn.Module):
 
     def forward(self, pts, view, tx, pts1, view1, tx1):
         """forward function of the model
-
         Parameters
         ----------
         pts: [batchsize, n_samples, 3], position of voxels
@@ -210,14 +209,9 @@ class RNeRF(nn.Module):
 
         sign1 = self.signal_output1(x)
 
-
-        #feature_first = torch.cat([attn1,sign1], -1)
-
         outputs1 = torch.cat([attn1, sign1], -1).contiguous()  # [batchsize, n_samples, 4]tx rx
 
         outputs1 = outputs1.view(shape[:-1] + outputs1.shape[-1:])
-
-
 
         shape = pts1.shape
 
@@ -241,6 +235,7 @@ class RNeRF(nn.Module):
 
         for i, layer in enumerate(self.signal_linears1):
             x1 = F.relu(layer(x1))
+            
         signal_phase2 = self.signal_output2(x1)    #[batchsize, n_samples, 2]
 
         outputs2 = torch.cat([attn2, signal_phase2], -1).contiguous()    # [batchsize, n_samples, 4]tx rx
