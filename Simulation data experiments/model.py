@@ -140,26 +140,25 @@ class RNeRF(nn.Module):
         )
 
         ## output head, 2 for amplitude and phase
-        self.attenuation_output1 = nn.Linear(W, attn_output_dims) # 第一根网络的幅度
+        self.attenuation_output1 = nn.Linear(W, attn_output_dims) 
 
-        self.attenuation_output2 = nn.Linear(W, attn_output_dims) ## 第二根网络的幅度
+        self.attenuation_output2 = nn.Linear(W, attn_output_dims) 
 
 
         self.feature_layer = nn.Linear(W, W)
 
         self.feature_layer2 = nn.Linear(W, W)
 
-        self.feature_layer1 = nn.Linear(W // 2, W // 4)  # 提取第一条网络特征--------------
+        self.feature_layer1 = nn.Linear(W // 2, W // 4)  
 
-        self.signal_output1 = nn.Linear(W//2, sig_output_dims) #第一根网络的相位
+        self.signal_output1 = nn.Linear(W//2, sig_output_dims) 
 
-        self.signal_output2 = nn.Linear(W // 2, sig_output_dims) #第二根网络的相位
+        self.signal_output2 = nn.Linear(W // 2, sig_output_dims) 
 
 
 
 
     def forward(self, pts, view, tx, pts1, view1, tx1):
-    #def forward(self,pts1 , view1, tx1):
         """forward function of the model
 
         Parameters
@@ -201,13 +200,11 @@ class RNeRF(nn.Module):
                 x = torch.cat([pts, x], -1)
 
 
-        attn1 = self.attenuation_output1(x)    # (batch_size, 2)第一个网络的幅度
+        attn1 = self.attenuation_output1(x)    
         feature = self.feature_layer(x)
 
         x = torch.cat([feature, view, tx], -1)
 
-
-        #提取第一条网络特征
         for i, layer in enumerate(self.signal_linears):
             x = F.relu(layer(x))
 
