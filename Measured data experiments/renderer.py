@@ -174,4 +174,4 @@ class Renderer_RSSI(Renderer):
 
         return abs(recv_signal)
 
-renderer_dict = {"spectrum": Renderer_spectrum, "rssi": Renderer_RSSI, "csi": Renderer_CSI}
+renderer_dict = {"rssi": Renderer_RSSI}
