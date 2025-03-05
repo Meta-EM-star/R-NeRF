@@ -82,7 +82,7 @@ class Renderer_RSSI(Renderer):
 
 
         chunks = 36
-        chunks_num = 36 // chunks
+        chunks_num = 36 * 9 // chunks
 
         rays_o_chunk = rays_o.expand(chunks, -1, -1).permute(1,0,2) #[bs, cks, 3] tx ris
         rays_o_chunk1 = rays_o1.expand(chunks, -1, -1).permute(1,0,2) #[bs, cks, 3] rx ris
