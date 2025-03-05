@@ -97,7 +97,6 @@ class BLE_dataset(Dataset):
         self.ris_poses = torch.tensor(pd.read_csv(ris_pos_dir).values, dtype=torch.float32)
         self.ris_poses = self.ris_poses / scale_worldsize
 
-
         # Load gateway received RSSI
         self.rssis = torch.tensor(pd.read_csv(self.rssi_dir).values, dtype=torch.float32)
 
@@ -118,8 +117,6 @@ class BLE_dataset(Dataset):
         #nn_inputs = torch.tensor(np.zeros((len(self), 3+3+3*self.alpha_res*self.beta_res)), dtype=torch.float32)
         nn_labels = torch.tensor(np.zeros((len(self), 1)), dtype=torch.float32)
 
-
-
         #ris信息-----------------------------------------------------------------
         gateways_ray_o1, gateways_rays_d1 = self.gen_rays_gateways_ris()
 
@@ -136,8 +133,6 @@ class BLE_dataset(Dataset):
             gateway_ray_o1 = gateways_ray_o1[idx].view(-1)  # [3]
 
             gateway_rays_d1 = gateways_rays_d1[idx].view(-1)  # [n_rays x 3]
-
-
 
 
             for i_gateway, rssi in enumerate(rssis):
@@ -166,7 +161,6 @@ class BLE_dataset(Dataset):
         r_d : tensor. [n_gateways, n_rays, 3]. The direction of rays, unit vector
         """
 
-
         alphas = torch.linspace(0, 180, self.alpha_res) / 180 * np.pi
         betas = torch.linspace(0, 180, self.beta_res) / 180 * np.pi
         alphas = alphas.repeat(self.beta_res)    # [0,1,2,3,....]
@@ -183,10 +177,9 @@ class BLE_dataset(Dataset):
         r_d3 = r_d.expand([self.n_gateways_tx, self.beta_res * self.alpha_res, 3])  # [n_gateways, 9*36, 3]
         r_o3 = self.gateway_pos3.unsqueeze(1) # [21, 1, 3]
         r_o3, r_d3 = r_o3.contiguous(), r_d3.contiguous()
-        print(r_d3,r_o3)
+        #print(r_d3,r_o3)
 
         return r_o3, r_d3
-
 
 
     def gen_rays_gateways_ris(self):
@@ -197,7 +190,6 @@ class BLE_dataset(Dataset):
         r_o : tensor. [n_gateways, 1, 3]. The origin of rays
         r_d : tensor. [n_gateways, n_rays, 3]. The direction of rays, unit vector
         """
-
 
         alphas = torch.linspace(0, 350, self.alpha_res) / 180 * np.pi
         betas = torch.linspace(10, 90, self.beta_res) / 180 * np.pi
@@ -215,7 +207,7 @@ class BLE_dataset(Dataset):
         r_d1 = r_d.expand([self.n_gateways_ris, self.beta_res * self.alpha_res, 3])  # [n_gateways, 9*36, 3]
         r_o1 = self.gateway_pos1.unsqueeze(1) # [21, 1, 3]
         r_o1, r_d1 = r_o1.contiguous(), r_d1.contiguous()
-        print(r_d1,r_o1)
+        #print(r_d1,r_o1)
         return r_o1, r_d1
 
     def gen_rays_gateways_rx(self):
@@ -238,8 +230,6 @@ class BLE_dataset(Dataset):
         z = radius * torch.sin(betas)
 
         r_d = torch.stack([x, y, z], axis=0).T  # [9*36, 3]
-
-
 
         # 计算rx的w------------------------------------------------------------------
         r_d2 = r_d.expand([self.n_gateways_rx, self.beta_res * self.alpha_res, 3])  # [n_gateways, 9*36, 3]
