@@ -87,13 +87,11 @@ class Renderer_RSSI(Renderer):
         rays_o_chunk = rays_o.expand(chunks, -1, -1).permute(1,0,2) #[bs, cks, 3] tx ris
         rays_o_chunk1 = rays_o1.expand(chunks, -1, -1).permute(1,0,2) #[bs, cks, 3] rx ris
 
-
         tags_chunk = tx.expand(chunks, -1, -1).permute(1,0,2)        #[bs, cks, 3]tx ris
         tags_chunk1 = ris.expand(chunks, -1, -1).permute(1,0,2)        #[bs, cks, 3]rx ris
 
 
         recv_signal = torch.zeros(batchsize1).cuda() # tx ris
-
 
         for i in range(chunks_num):
 
