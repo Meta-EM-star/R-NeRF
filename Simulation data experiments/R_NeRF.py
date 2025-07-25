@@ -172,9 +172,8 @@ class RNeRF_Runner():
 
                     ## save predicted spectrum
                     predict_rssi = amplitude2rssi(predict_rssi.detach().cpu())
-                    predict_rssi = amplitude2rssi1(predict_rssi.detach().cpu())
-                    gt_rssi = amplitude2rssi(test_label.detach().cpu())
-                    gt_rssi = amplitude2rssi1(gt_rssi.detach().cpu())
+                    
+                    gt_rssi = amplitude2rssi(test_label.detach().cpu())            
 
                     error = abs(predict_rssi - gt_rssi.reshape(-1))
 
