@@ -203,7 +203,7 @@ if __name__ == '__main__':
     parser.add_argument('--config', type=str, default='configs/mimo-csi.yml', help='config file path')
     parser.add_argument('--gpu', type=int, default=0)
     parser.add_argument('--mode', type=str, default='train')
-    parser.add_argument('--dataset_type', type=str, default='mimo')
+    parser.add_argument('--dataset_type', type=str, default='config.yml')
     args = parser.parse_args()
     print(args)
     torch.cuda.set_device(args.gpu)
